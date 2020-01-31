@@ -11,6 +11,7 @@ let storage = multer.diskStorage({
     cb(null, "./csv");
   },
   filename: (req, file, cb) => {
+    console.log("FILE =>", file);
     let fileName = file.fieldname + Date.now() + "-" + ".csv";
     cb(null, fileName);
     req._fileName = fileName;
