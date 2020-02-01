@@ -19,9 +19,7 @@ var controllers = {
     let jsonData = null;
     try {
       const filePath = path.join(__dirname, `../../csv/${req._fileName}`);
-      console.log('filePath---', filePath);
       const file = fs.readFileSync(filePath);
-      console.log('file---', file);
 
       let fileStringified = file.toString();
 
