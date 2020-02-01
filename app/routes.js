@@ -23,7 +23,6 @@ let CSVBulkUpload = multer({
 
 // BULK UPLOAD ROUTES
 router.get("/test", controller.testControllerFun);
-app.route("/testUtils").get(controller.testUtils);
 router.post("/bulkUpload", CSVBulkUpload.single("file"), controller.bulkUpload);
 
 module.exports = router;
