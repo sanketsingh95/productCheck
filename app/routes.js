@@ -18,11 +18,12 @@ let storage = multer.diskStorage({
   }
 });
 
-let CSVBulkUpload = multer({ storage: storage });
+let CSVBulkUpload = multer({
+  storage: storage
+});
 
 // BULK UPLOAD ROUTES
 router.get("/test", controller.testControllerFun);
-
 router.post("/bulkUpload", CSVBulkUpload.single("file"), controller.bulkUpload);
 
 module.exports = router;
