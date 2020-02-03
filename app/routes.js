@@ -12,7 +12,9 @@ let storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     console.log("FILE =>", file);
-    let fileName = file.fieldname + Date.now() + "-" + ".csv";
+    // let fileName = file.originalname + "_" + Date.now() + ".csv";
+    let fileName = file.originalname;
+
     cb(null, fileName);
     req._fileName = fileName;
   }

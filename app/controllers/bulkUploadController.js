@@ -1,6 +1,8 @@
+//@ts-check
+
 "use strict";
 
-var bulkUpload = require("../services/bulkUploadServices");
+var bulkUploadServices = require("../services/bulkUploadServices");
 var utilsValidation = require("../utility/utils");
 
 const fs = require("fs");
@@ -10,45 +12,49 @@ const Papa = require("papaparse");
 const redis = require("../../common/redis");
 
 var controllers = {
-  testControllerFun: async function (req, res, next) {
-    let result = await bulkUpload.testService();
+  testControllerFun: async function(req, res, next) {
+    let result = await bulkUploadServices.testService();
     res.send(result);
   },
 
-  bulkUpload: async function (req, res, next) {
+  bulkUpload: async function(req, res, next) {
     let jsonData = null;
-    try {
-      const filePath = path.join(__dirname, `../../csv/${req._fileName}`);
-      const file = fs.readFileSync(filePath);
 
-      let fileStringified = file.toString();
+    const filePath = path.join(__dirname, `../../csv/${req._fileName}`);
+    const file = fs.readFileSync(filePath);
 
-      if (fileStringified.length > 0) {
-        Papa.parse(fileStringified, {
-          header: true,
-          dynamicTyping: true,
-          complete: function (results) {
-            let newData = results.data
-            newData.pop()
+    let fileStringified = file.toString();
 
+    if (fileStringified.length > 0) {
+      Papa.parse(fileStringified, {
+        header: true,
+        dynamicTyping: true,
+        complete: function(results) {
+          let newData = results.data;
+          newData.pop();
+          jsonData = newData;
+        }
+      });
+    }
 
-            jsonData = newData
-            console.log(JSON.stringify(newData, null, 3));
-          }
-        });
-      }
-      let finalResponse = await utilsValidation.excelValidation(jsonData);
+    let checkedProduct = await utilsValidation.excelValidation(
+      jsonData,
+      req._fileName
+    );
+
+    let validProductUpload = await bulkUploadServices.uploadJSONtoDB(
+      checkedProduct
+    );
+    console.log(typeof validProductUpload);
+    if (validProductUpload.length > 0) {
       res.send({
         success: 1,
-        data: finalResponse
+        data: validProductUpload
       });
-
-      // validate json
-    } catch (error) {
-      console.log(error);
+    } else {
       res.send({
-        success: false,
-        msg: error
+        success: 1,
+        data: validProductUpload
       });
     }
   }

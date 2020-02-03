@@ -1,31 +1,27 @@
-"use strict";
-
+//@ts-check
 const request = require("request-promise");
 const productModel = require("../models/product");
-const tempBulkUpload = require("../models/tempBulkUpload");
+const TempBulkUpload = require("../models/tempBulkUpload");
 const followersModel = require("../models/followModel");
+const util = require("../utility/utils");
 
 var bulkUploadServices = {
-  testService: async function () {
-    return " test completed sasdfghjkl./.,mnbvc";
+  testService: async function() {
+    let url = "https://cdn2.coutloot.com/stock/177/176736_1.jpg";
+    let start = Date.now();
+    let result = await util.doesFileExist(url);
+    let end = Date.now();
+    let timeTake = end - start;
+    console.log("object", result);
+    return { result: result, timeTake };
   },
-  validationUpload: async function (dataToValidate) {
-    // console.log("dataToValidate---", dataToValidate.length);
-    var successful = [];
-    var unsuccessful = [];
+
+  uploadJSONtoDB: async function(JSONData) {
     try {
-      for (let i = 0; i < dataToValidate.length; i++) {
-        // console.log("====", i);
-        let result = await tempBulkUpload.create(dataToValidate[i]);
-        // console.log("result---", result);
-        // if (!result) {
-        //   unsuccessful.push(dataToValidate[i]);
-        // }
-        successful.push(result);
-      }
-      return successful;
+      let res = await TempBulkUpload.insertMany(JSONData);
+      return res;
     } catch (error) {
-      throw error;
+      console.error(`Failed to insert documents: ${error}`);
     }
   }
 };
