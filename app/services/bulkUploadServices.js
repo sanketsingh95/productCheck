@@ -23,6 +23,10 @@ var bulkUploadServices = {
     } catch (error) {
       console.error(`Failed to insert documents: ${error}`);
     }
+  },
+
+  editProductDetails: async function() {
+    return "edit Product Details";
   }
 };
 

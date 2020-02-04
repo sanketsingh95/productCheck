@@ -57,6 +57,10 @@ var controllers = {
         data: validProductUpload
       });
     }
+  },
+
+  editProductDetails: async function(req, res) {
+    bulkUploadServices.editProductDetails();
   }
 };
 
