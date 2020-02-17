@@ -27,6 +27,6 @@ app.use(morgan("dev"));
 app.use(routes);
 
 //listening on port
-app.listen(3052, function() {
-    console.log("SERVER IS UP ON ", 3052);
+app.listen(3000, function() {
+    console.log("SERVER IS UP ON ", 3000);
 });

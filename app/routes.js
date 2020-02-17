@@ -7,4 +7,6 @@ var controller = require("./controllers/bulkUploadController");
 
 // BULK UPLOAD ROUTES
 router.get("/test", controller.testController);
+router.get("/validateProducts", controller.validateProducts);
+
 module.exports = router;
