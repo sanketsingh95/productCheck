@@ -11,7 +11,7 @@ try {
 }
 
 var dbCreds = {
-    userName: "dipesh",
+    userName: "sanket",
     userSecret: "test",
     database: "commonDb",
     access: "readWrite",

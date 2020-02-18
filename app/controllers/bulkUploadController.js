@@ -35,17 +35,16 @@ let controllers = {
     validateProducts: async function(req, res) {
         let counter = null;
 
-        // getCounter
-
-        counter = await this.getCounter();
+        counter = await getCounter();
 
         try {
-            //get the products (/page) from the DB
             // verify it
             //send it back to the Db  (isVAerifiedProduct = true /false)
             let products;
             try {
-                products = await getProducts();
+                products = await getProducts(counter);
+                console.log("COUNTER =>", counter);
+
                 console.log("Length", products.length);
             } catch (error) {
                 console.log(error);
@@ -58,7 +57,8 @@ let controllers = {
                     // add if isVerifiedProduct  trur/ false  //await
                 }
             }
-            // update counter
+            let updatedCounter = await setCounter();
+            console.log("UPdated Counter => ", updatedCounter);
         } catch (error) {
             console.log(error);
         }

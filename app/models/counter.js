@@ -11,7 +11,7 @@ try {
 }
 
 var dbCreds = {
-    userName: "dipesh",
+    userName: "sanket",
     userSecret: "test",
     database: "commonDb",
     access: "readWrite",
@@ -29,6 +29,20 @@ var connectionObject = mongoConnect.getConnection(
 
 var connection = connectionObject.connection;
 
-var productSchema = mongoose.Schema({}, { false: false });
+var counterSchema = mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+            default: "pageCounter"
+        },
+        count: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
+    { strict: false }
+);
 
-module.exports = connection.model("counter", productSchema, "counter");
+module.exports = connection.model("counter", counterSchema, "counter");
