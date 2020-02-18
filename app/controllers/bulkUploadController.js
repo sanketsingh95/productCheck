@@ -32,7 +32,6 @@ let controllers = {
             console.log(error);
         }
     },
-
     validateProducts: async function(req, res) {
         let counter = null;
 
