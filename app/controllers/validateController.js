@@ -237,26 +237,32 @@ let controllers = {
                         }
                     }
 
-                    Joi.validate(product, Schema, async (err, value) => {
-                        if (err) {
-                            console.log("error", err.details);
+                    Joi.validate(
+                        product,
+                        Schema,
+                        { abortEarly: false },
+                        async (err, value) => {
                             if (err) {
+                                console.log("error", err.details);
+                                if (err) {
+                                    let response = await updateProduct(
+                                        product.productId,
+                                        false,
+                                        err.details
+                                    );
+                                    // console.log("falsy ", response);
+                                }
+                            } else {
                                 let response = await updateProduct(
                                     product.productId,
-                                    false
+                                    true
                                 );
-                                // console.log("falsy ", response);
+                                // console.log("truthy ", "\n", response);
+                                // if validate
+                                // add if isVerifiedProduct  trur/ false  //await
                             }
-                        } else {
-                            let response = await updateProduct(
-                                product.productId,
-                                true
-                            );
-                            // console.log("truthy ", "\n", response);
-                            // if validate
-                            // add if isVerifiedProduct  trur/ false  //await
                         }
-                    });
+                    );
                 }
             }
             let updatedCounter = await setCounter();

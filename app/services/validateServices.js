@@ -52,14 +52,15 @@ let bulkUploadServices = {
             console.log(error);
         }
     },
-    updateProduct: async function(productId, status) {
+    updateProduct: async function(productId, status, error = []) {
         try {
             console.log(productId, status);
 
             const filter = { productId };
             const update = {
                 $set: {
-                    isValidProduct: status
+                    isValidProduct: status,
+                    errorLog: error
                 }
             };
             let response = await Products.findOneAndUpdate(filter, update, {

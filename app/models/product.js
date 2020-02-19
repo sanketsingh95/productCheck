@@ -190,6 +190,9 @@ var productSchema = mongoose.Schema({
     },
     isValidProduct: {
         type: Boolean
+    },
+    errorLog: {
+        type: Array
     }
 });
 
