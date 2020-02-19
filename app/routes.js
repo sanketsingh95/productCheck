@@ -3,7 +3,7 @@ const multer = require("multer");
 
 const router = new express.Router();
 
-var controller = require("./controllers/bulkUploadController");
+var controller = require("./controllers/validateController");
 
 // BULK UPLOAD ROUTES
 router.get("/test", controller.testController);

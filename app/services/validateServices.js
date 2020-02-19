@@ -1,6 +1,6 @@
 //@ts-check
-const writeProducts = require("../models/writeProduct");
-const readProducts = require("../models/readProduct");
+// const writeProducts = require("../models/writeProduct");
+const Products = require("../models/product");
 const Counter = require("../models/counter");
 
 let bulkUploadServices = {
@@ -40,12 +40,35 @@ let bulkUploadServices = {
     },
     getProducts: async function(pgNum = 0) {
         try {
-            let limit = 1000;
-            let products = await readProducts
-                .find({})
+            let limit = 2;
+            let products = await Products.find({ isInternational: 1 })
                 .limit(limit)
-                .skip(pgNum * limit);
+                .skip(pgNum * limit)
+                .lean();
+            // console.log("===============", JSON.stringify(products, null, 2));
+
             return products;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    updateProduct: async function(productId, status) {
+        try {
+            console.log(productId, status);
+
+            const filter = { productId };
+            const update = {
+                $set: {
+                    isValidProduct: status
+                }
+            };
+            let response = await Products.findOneAndUpdate(filter, update, {
+                new: true,
+                upsert: true
+            });
+            console.log("AFTER UPDATING ", response);
+
+            return response;
         } catch (error) {
             console.log(error);
         }

@@ -12,9 +12,9 @@ try {
 
 var dbCreds = {
     userName: "sanket",
-    userSecret: "test",
+    userSecret: "",
     database: "products",
-    access: "read",
+    access: "readWrite",
     applicationId: "t001"
 };
 
@@ -187,6 +187,9 @@ var productSchema = mongoose.Schema({
         views: {
             type: "Number"
         }
+    },
+    isValidProduct: {
+        type: Boolean
     }
 });
 
