@@ -12,14 +12,20 @@ const Joi = require("joi");
 const Papa = require("papaparse");
 
 const productSchema = Joi.object({
-    productId: Joi.number().required(),
+    productId: Joi.number()
+        .integer()
+        .required(),
     listedOn: Joi.number().required(),
     listingType: Joi.string().required(),
     productType: Joi.string().required(),
-    quantity: Joi.number().required(),
+    quantity: Joi.number()
+        .integer()
+        .required(),
     status: Joi.string().required(),
     sellerDetails: Joi.object({
-        userId: Joi.number().required(),
+        userId: Joi.number()
+            .integer()
+            .required(),
         name: Joi.string().required(),
         profilePic: Joi.string().required(),
         city: Joi.string().required(),
@@ -43,9 +49,7 @@ const productSchema = Joi.object({
         categoryId: Joi.number().required(),
         categoryIdString: Joi.string().required()
     }),
-    collections: Joi.array()
-        .items(Joi.string())
-        .allow(""),
+    collections: Joi.array().items(Joi.number()),
     details: Joi.object({
         title: Joi.string().required(),
         description: Joi.string().required(),
@@ -74,11 +78,15 @@ const productSchema = Joi.object({
         other_items: Joi.array(),
         sku: Joi.array()
     }),
-    _id: Joi.any()
+    _id: Joi.any(),
+    isValidProduct: Joi.boolean(),
+    errorLog: Joi.array()
 });
 
 const InternationalProductSchema = Joi.object({
-    productId: Joi.number().required(),
+    productId: Joi.number()
+        .integer()
+        .required(),
     listedOn: Joi.number().required(),
     listingType: Joi.string().required(),
     productType: Joi.string().required(),
@@ -86,7 +94,9 @@ const InternationalProductSchema = Joi.object({
     quantity: Joi.number(),
     status: Joi.string().required(),
     sellerDetails: Joi.object({
-        userId: Joi.number().required(),
+        userId: Joi.number()
+            .integer()
+            .required(),
         name: Joi.string().required(),
         profilePic: Joi.string().required(),
         city: Joi.string().required(),
@@ -110,9 +120,8 @@ const InternationalProductSchema = Joi.object({
         categoryId: Joi.number().required(),
         categoryIdString: Joi.string()
     }),
-    collections: Joi.array()
-        .items(Joi.string())
-        .allow(""),
+    collections: Joi.array().items(Joi.number()),
+
     details: Joi.object({
         title: Joi.string().required(),
         description: Joi.string().required(),
@@ -127,13 +136,31 @@ const InternationalProductSchema = Joi.object({
                 Joi.object({
                     sku: Joi.string().required(),
                     variantName: Joi.string(),
-                    priceDetails: Joi.object({}),
-                    quantity: Joi.number(),
                     default: Joi.number(),
+                    priceDetails: Joi.object({
+                        labelPrice: Joi.number()
+                            .integer()
+                            .required(),
+                        listedPrice: Joi.number()
+                            .integer()
+                            .required(),
+                        supplierPrice: Joi.number()
+                            .integer()
+                            .required(),
+                        commisionPercent: Joi.number()
+                            .integer()
+                            .required(),
+                        pickupCharges: Joi.number()
+                            .integer()
+                            .required(),
+                        commision: Joi.number().integer(),
+                        userEarnings: Joi.number().integer()
+                    }),
+                    quantity: Joi.number().integer(),
                     vendorSpecific: Joi.object({
-                        price: Joi.number(),
-                        packingFee: Joi.number(),
-                        handlingFee: Joi.number(),
+                        price: Joi.number().integer(),
+                        packingFee: Joi.number().integer(),
+                        handlingFee: Joi.number().integer(),
                         baseSKU: Joi.string(),
                         warehouse: Joi.string(),
                         dollarRate: Joi.number()
@@ -185,7 +212,9 @@ const InternationalProductSchema = Joi.object({
         volumetricWeight: Joi.number()
     }),
     _id: Joi.any(),
-    __v: Joi.number().allow()
+    __v: Joi.number().allow(),
+    isValidProduct: Joi.boolean(),
+    errorLog: Joi.array()
 });
 
 let controllers = {
@@ -243,7 +272,7 @@ let controllers = {
                         { abortEarly: false },
                         async (err, value) => {
                             if (err) {
-                                console.log("error", err.details);
+                                // console.log("error", err.details);
                                 if (err) {
                                     let response = await updateProduct(
                                         product.productId,
@@ -253,17 +282,16 @@ let controllers = {
                                     // console.log("falsy ", response);
                                 }
                             } else {
-                                let response = await updateProduct(
-                                    product.productId,
-                                    true
-                                );
-                                // console.log("truthy ", "\n", response);
-                                // if validate
-                                // add if isVerifiedProduct  trur/ false  //await
+                                // let response = await updateProduct(
+                                //     product.productId,
+                                //     true
+                                // );
+                                console.log("truthy ", product.productId);
                             }
                         }
                     );
                 }
+                console.log("COMPLEETED");
             }
             let updatedCounter = await setCounter();
             console.log("UPdated Counter => ", updatedCounter);

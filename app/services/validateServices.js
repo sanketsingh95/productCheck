@@ -40,7 +40,7 @@ let bulkUploadServices = {
     },
     getProducts: async function(pgNum = 0) {
         try {
-            let limit = 2;
+            let limit = 100;
             let products = await Products.find({ isInternational: 1 })
                 .limit(limit)
                 .skip(pgNum * limit)
@@ -54,7 +54,12 @@ let bulkUploadServices = {
     },
     updateProduct: async function(productId, status, error = []) {
         try {
+            console.log("----------------------------------------->>");
+
             console.log(productId, status);
+
+            console.log(error);
+            console.log("----------------------------------------");
 
             const filter = { productId };
             const update = {
@@ -67,7 +72,7 @@ let bulkUploadServices = {
                 new: true,
                 upsert: true
             });
-            console.log("AFTER UPDATING ", response);
+            // console.log("AFTER UPDATING ", response);
 
             return response;
         } catch (error) {
