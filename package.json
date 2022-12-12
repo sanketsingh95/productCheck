@@ -12,7 +12,7 @@
   "author": "Mahendra Bhoir",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "image-to-base64": "^2.0.1",
     "joi": "^14.3.1",
     "json-stringify-safe": "^5.0.1",
